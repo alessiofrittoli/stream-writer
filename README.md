@@ -1,134 +1,38 @@
-# Node Module Starter 🛠️
+# Stream Writer 🪶
 
 [![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
 
-[version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fnode-module-starter
-[npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fnode-module-starter
-[coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/node-module-starter/badge.svg
-[coverage-url]: https://coveralls.io/github/alessiofrittoli/node-module-starter
-[downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fnode-module-starter.svg
-[deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fnode-module-starter
-[deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fnode-module-starter
+[version-badge]: https://img.shields.io/npm/v/%40alessiofrittoli%2Fstream-writer
+[npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fstream-writer
+[coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/stream-writer/badge.svg
+[coverage-url]: https://coveralls.io/github/alessiofrittoli/stream-writer
+[downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fstream-writer.svg
+[deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fstream-writer
+[deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fstream-writer
 
-## Starter repository for developing node_modules
+## Easly push data to a Stream
 
 ### Table of Contents
 
 - [Getting started](#getting-started)
-- [Development](#development)
-  - [ESLint](#eslint)
-  - [Jest](#jest)
-- [Contributing](#contributing)
 - [Security](#security)
 - [Credits](#made-with-)
 
 ---
 
-### Getting started (delete once cloned in your project)
+### Getting started
 
-Run the following command to start using `node-module-starter` for your projects:
-
-```bash
-git clone git@github.com:alessiofrittoli/node-module-starter.git && git remote remove origin
-```
-
-install dependencies
+Run the following command to start using `stream-writer` in your projects:
 
 ```bash
-pnpm i
-```
-
-Read the [Creating a repository from a template - GitHub Docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for more in-detail informations about creating a new Repository from a template using GitHub web interface.
-
----
-
-### Getting started (customize based on your project needs)
-
-Run the following command to start using `{package_name}` in your projects:
-
-```bash
-npm i {package_name}
+npm i @alessiofrittoli/stream-writer
 ```
 
 or using `pnpm`
 
 ```bash
-pnpm i {package_name}
+pnpm i @alessiofrittoli/stream-writer
 ```
-
----
-
-### Development
-
-#### Install depenendencies
-
-```bash
-npm install
-```
-
-or using `pnpm`
-
-```bash
-pnpm i
-```
-
-#### Build the source code
-
-Run the following command to test and build code for distribution.
-
-```bash
-pnpm build
-```
-
-#### [ESLint](https://www.npmjs.com/package/eslint)
-
-warnings / errors check.
-
-```bash
-pnpm lint
-```
-
-#### [Jest](https://npmjs.com/package/jest)
-
-Run all the defined test suites by running the following:
-
-```bash
-# Run tests and watch file changes.
-pnpm test:watch
-
-# Run tests and watch file changes with jest-environment-jsdom.
-pnpm test:jsdom
-
-# Run tests in a CI environment.
-pnpm test:ci
-
-# Run tests in a CI environment with jest-environment-jsdom.
-pnpm test:ci:jsdom
-```
-
-You can eventually run specific suits like so:
-
-```bash
-pnpm test:jest
-pnpm test:jest:jsdom
-```
-
-Run tests with coverage.
-
-An HTTP server is then started to serve coverage files from `./coverage` folder.
-
-⚠️ You may see a blank page the first time you run this command. Simply refresh the browser to see the updates.
-
-```bash
-test:coverage:serve
-```
-
----
-
-### Contributing
-
-Contributions are truly welcome!\
-Please refer to the [Contributing Doc](./CONTRIBUTING.md) for more information on how to start contributing to this project.
 
 ---
 
