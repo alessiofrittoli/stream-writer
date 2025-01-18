@@ -30,7 +30,7 @@
 	],
 	"sideEffects": false,
 	"scripts": {
-		"build": "pnpm lint && pnpm test:ci && tsup",
+		"build": "pnpm lint && pnpm test:ci && pnpm test:ci:jsdom && tsup",
 		"build:watch": "tsup --watch",
 		"lint": "eslint",
 		"release": "node scripts/publish.js --verbose --npm",
@@ -46,10 +46,13 @@
 		"test:coverage:jsdom": "JSDOM=true pnpm test:coverage",
 		"test:coverage:jsdom:serve": "JSDOM=true pnpm test:coverage:serve",
 		"test:jest": "pnpm test:watch jest.test.ts",
-		"test:jest:jsdom": "JSDOM=true pnpm test:jest"
+		"test:jest:jsdom": "JSDOM=true pnpm test:jest",
+		"test:stream": "pnpm test:watch index.test.ts",
+		"test:stream:jsdom": "JSDOM=true pnpm test:stream"
 	},
 	"devDependencies": {
 		"@alessiofrittoli/node-scripts": "^2.2.1",
+		"@alessiofrittoli/stream-reader": "^1.3.0",
 		"@eslint/js": "^9.18.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
