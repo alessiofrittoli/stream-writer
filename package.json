@@ -1,6 +1,6 @@
 {
 	"name": "@alessiofrittoli/stream-writer",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Easly push data to a Stream",
 	"author": {
 		"name": "Alessio Frittoli",
