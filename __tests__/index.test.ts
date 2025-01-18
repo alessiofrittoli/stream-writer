@@ -36,10 +36,15 @@ describe( 'Stream', () => {
 		streamData()
 			.then( () => stream.close() )
 		
-		await new StreamReader( stream.readable ).read()
+		const chunks = await new StreamReader( stream.readable ).read()
 
 		expect( transform )
 			.toHaveBeenCalledWith( expect.any( Object ), expect.any( TransformStreamDefaultController ) )
+		
+		expect( chunks ).toEqual( [
+			encoder.encode( JSON.stringify( { message: 'somedata' } ) ),
+			encoder.encode( JSON.stringify( { message: 'somedata 2' } ) ),
+		] )
 	} )
 
 } )
@@ -151,7 +156,11 @@ describe( 'Stream.abort()', () => {
 			await stream.abort()
 			await stream.abort()
 			await stream.abort()
+			await stream.write( 'we' )
 		} )()
+		.catch( error => {
+			console.log( error.name )
+		} )
 
 		expect( stream.closed ).toBe( true )
 		expect( stream[ 'isClosing' ] ).toBe( false )

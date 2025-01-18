@@ -46,8 +46,6 @@ export class Stream<I = unknown, O = I> extends TransformStream<I, O>
 	 * @property writer		— The `WritableStreamDefaultWriter<I>` for writing to the stream.
 	 * @property closed		— A boolean indicating whether the stream is closed.
 	 * @property headers	— Common headers to return in a Server Response.
-	 * 
-	 * If the `retry` property is provided, it writes the formatted retry interval to the stream.
 	 */
 	constructor(
 		transformer?		: Transformer<I, O>,
@@ -86,11 +84,12 @@ export class Stream<I = unknown, O = I> extends TransformStream<I, O>
 
 
 	/**
-	 * Closes the writer if it is not already closed or in the process of closing.
-	 * Sets the `isClosing` flag to true to prevent multiple close operations.
-	 * Pushes an 'end' event to signal the end of the stream.
-	 * Closes the writer and releases the lock.
-	 * Resets the `isClosing` flag to false after the operation.
+	 * Close the Stream.
+	 * 
+	 * - Closes the writer if it is not already closed or in the process of closing.
+	 * - Sets the `isClosing` flag to `true` to prevent multiple close operations when `.close()` is not awaited.
+	 * - Closes the writer and releases the lock.
+	 * - Resets the `isClosing` flag to `false` after the operation.
 	 * 
 	 * @returns A new Promise with the current `Stream` instance for chaining purposes.
 	 */
