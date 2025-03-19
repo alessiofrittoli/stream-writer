@@ -1,6 +1,6 @@
 # Stream Writer 🪶
 
-[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
+[![NPM Latest Version][version-badge]][npm-url] [![Coverage Status][coverage-badge]][coverage-url] [![Socket Status][socket-badge]][socket-url] [![NPM Monthly Downloads][downloads-badge]][npm-url] [![Dependencies][deps-badge]][deps-url]
 
 [![GitHub Sponsor][sponsor-badge]][sponsor-url]
 
@@ -8,6 +8,8 @@
 [npm-url]: https://npmjs.org/package/%40alessiofrittoli%2Fstream-writer
 [coverage-badge]: https://coveralls.io/repos/github/alessiofrittoli/stream-writer/badge.svg
 [coverage-url]: https://coveralls.io/github/alessiofrittoli/stream-writer
+[socket-badge]: https://socket.dev/api/badge/npm/package/@alessiofrittoli/stream-writer
+[socket-url]: https://socket.dev/npm/package/@alessiofrittoli/stream-writer/overview
 [downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fstream-writer.svg
 [deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fstream-writer
 [deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fstream-writer
