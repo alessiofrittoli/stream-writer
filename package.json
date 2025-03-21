@@ -63,18 +63,16 @@
 		"//4a": "*********************************************************************",
 		"//4b": "************************ TARGETED UNIT TESTS ************************",
 		"//4c": "*********************************************************************",
-		"test:jest": "pnpm test:watch jest.test.ts",
-		"test:jest:jsdom": "JSDOM=true pnpm test:jest",
 		"test:stream": "pnpm test:watch index.test.ts",
 		"test:stream:jsdom": "JSDOM=true pnpm test:stream"
 	},
 	"devDependencies": {
-		"@alessiofrittoli/node-scripts": "^2.3.1",
-		"@alessiofrittoli/stream-reader": "^2.2.1",
+		"@alessiofrittoli/node-scripts": "^2.4.0",
+		"@alessiofrittoli/stream-reader": "^2.3.0",
 		"@eslint/js": "^9.22.0",
 		"@jest/globals": "^29.7.0",
 		"@types/jest": "^29.5.14",
-		"@types/node": "^22.13.10",
+		"@types/node": "^22.13.11",
 		"concurrently": "^9.1.2",
 		"dotenv": "^16.4.7",
 		"eslint": "^9.22.0",
@@ -86,7 +84,7 @@
 		"ts-node": "^10.9.2",
 		"tsup": "^8.4.0",
 		"typescript": "^5.8.2",
-		"typescript-eslint": "^8.26.1"
+		"typescript-eslint": "^8.27.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
