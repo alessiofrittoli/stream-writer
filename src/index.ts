@@ -1,3 +1,5 @@
+import { AbortError, type AbortErrorOptions } from "@alessiofrittoli/exception/abort"
+
 /**
  * Stream class.
  * 
@@ -114,14 +116,14 @@ export class Stream<I = unknown, O = I> extends TransformStream<I, O>
 	 * @param reason An optional string providing the reason for the abort.
 	 * @returns A new Promise with the current `Stream` instance for chaining purposes.
 	 */
-	async abort( reason?: string )
+	async abort( reason: string = 'Stream writer aborted.', options?: AbortErrorOptions )
 	{
 		if ( this.closed || this.isClosing ) return this
 
 		this.isClosing = true
 
 		try {
-			await this.writer.abort( new DOMException( reason || 'Stream writer aborted.', 'AbortError' ) )
+			await this.writer.abort( new AbortError( reason, options ) )
 		} finally {
 			this.closed		= true
 			this.isClosing	= false
