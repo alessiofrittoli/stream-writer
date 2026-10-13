@@ -18,8 +18,8 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(oxlint@1.87.0)(prettier-plugin-sort-imports@1.8.11(typescript@6.0.3))(prettier@3.9.10)(tsdown@0.23.1(typescript@6.0.3))(typescript@6.0.3)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.27.0))(vitest@5.0.4)
       '@alessiofrittoli/stream-reader':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: 3.1.0
+        version: 3.1.0(@alessiofrittoli/event-emitter@1.6.0)(@alessiofrittoli/exception@4.1.0)(@alessiofrittoli/math-utils@1.18.0)
       '@types/node':
         specifier: ^24.19.1
         version: 24.19.2
@@ -137,8 +137,13 @@ packages:
       vitest:
         optional: true
 
-  '@alessiofrittoli/stream-reader@3.0.0':
-    resolution: {integrity: sha512-LmLXfczGhuFjKfI/o0Z0UK+rWQQYJB1xtiZwIMtY0PzUB9B7rjSVYto2u9jkfE5JpGLG6Yr3xFCCSLMwdys+wQ==}
+  '@alessiofrittoli/stream-reader@3.1.0':
+    resolution: {integrity: sha512-4+GbJaR/6olfGcfdgcxwM0WpE/nFopx4KSAQcwqhGYiDaU5VWA7tNnnHa9y37irZbPNKmAt0JcM/EGr9AjGx5g==}
+    engines: {node: '>=24.15.0', pnpm: '>=11.27.1'}
+    peerDependencies:
+      '@alessiofrittoli/event-emitter': ^1.6.0
+      '@alessiofrittoli/exception': ^3.5.0
+      '@alessiofrittoli/math-utils': ^1.17.0
 
   '@alessiofrittoli/type-utils@1.9.0':
     resolution: {integrity: sha512-YtbIEvMc3i8KrY22a84WJXa+qWEyr0POpVsNhWIZMU3c23BX1AHcrdFTdYac5h3apdhu/uRrSUDjOkGO/Vie0Q==}
@@ -1438,10 +1443,10 @@ snapshots:
       vite: 8.3.4(@types/node@24.19.2)(esbuild@0.27.0)
       vitest: 5.0.4(@types/node@24.19.2)(@vitest/coverage-v8@5.0.4)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.27.0))
 
-  '@alessiofrittoli/stream-reader@3.0.0':
+  '@alessiofrittoli/stream-reader@3.1.0(@alessiofrittoli/event-emitter@1.6.0)(@alessiofrittoli/exception@4.1.0)(@alessiofrittoli/math-utils@1.18.0)':
     dependencies:
       '@alessiofrittoli/event-emitter': 1.6.0
-      '@alessiofrittoli/exception': 3.5.0
+      '@alessiofrittoli/exception': 4.1.0
       '@alessiofrittoli/math-utils': 1.18.0
 
   '@alessiofrittoli/type-utils@1.9.0':
