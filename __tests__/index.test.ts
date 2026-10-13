@@ -1,224 +1,176 @@
-import { Stream } from '@/index'
-import { ErrorCode } from '@alessiofrittoli/exception/code'
+import { AbortError } from '@alessiofrittoli/exception/abort'
 import { StreamReader } from '@alessiofrittoli/stream-reader'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ErrorCode } from '@alessiofrittoli/exception/code'
+import { Stream } from '@/index'
 
-
-describe( 'Stream', () => {
+describe('Stream', () => {
 	let stream: Stream
 
-	beforeEach( () => {
+	beforeEach(() => {
 		stream = new Stream()
-	} )
+	})
 
-	it( 'initializes with default headers', async () => {
-		expect( stream.headers ).toEqual( new Headers( {
-			'Connection'		: 'keep-alive',
-			'Transfer-Encoding'	: 'chunked',
-			'Cache-Control'		: 'no-cache, no-transform',
-			'X-Accel-Buffering'	: 'no',
-			'Content-Encoding'	: 'none',
-		} ) )
-	} )
+	it('initializes with default headers', async () => {
+		expect(stream.headers).toEqual(
+			new Headers({
+				Connection: 'keep-alive',
+				'Transfer-Encoding': 'chunked',
+				'Cache-Control': 'no-cache, no-transform',
+				'X-Accel-Buffering': 'no',
+				'Content-Encoding': 'none',
+			}),
+		)
+	})
 
-
-	it( 'accepts a custom transformer', async () => {
+	it('accepts a custom transformer', async () => {
 		const encoder = new TextEncoder()
-		const transform = jest.fn( ( chunk, controller ) => {
-			controller.enqueue( encoder.encode( JSON.stringify( chunk ) ) )
-		} )
-		const stream = new Stream<{ message: string }, Uint8Array>( { transform } )
+		const transform = vi.fn((chunk, controller) => {
+			controller.enqueue(encoder.encode(JSON.stringify(chunk)))
+		})
+		const stream = new Stream<{ message: string }, Uint8Array>({ transform })
 
-		const streamData = async () => {
-			await stream.write( { message: 'somedata' } )
-			await new Promise( resolve => setTimeout( resolve, 50 ) )
-			await stream.write( { message: 'somedata 2' } )
+		const streamData = async (): Promise<void> => {
+			await stream.write({ message: 'somedata' })
+			await new Promise(resolve => setTimeout(resolve, 50))
+			await stream.write({ message: 'somedata 2' })
 		}
 
-		streamData()
-			.then( () => stream.close() )
-		
-		const chunks = await new StreamReader( stream.readable ).read()
+		streamData().then(() => stream.close())
 
-		expect( transform )
-			.toHaveBeenCalledWith( expect.any( Object ), expect.any( TransformStreamDefaultController ) )
-		
-		expect( chunks ).toEqual( [
-			encoder.encode( JSON.stringify( { message: 'somedata' } ) ),
-			encoder.encode( JSON.stringify( { message: 'somedata 2' } ) ),
-		] )
-	} )
+		const chunks = await new StreamReader(stream.readable).read()
 
-} )
+		expect(transform).toHaveBeenCalledWith(
+			expect.any(Object),
+			expect.any(TransformStreamDefaultController),
+		)
 
+		expect(chunks).toEqual([
+			encoder.encode(JSON.stringify({ message: 'somedata' })),
+			encoder.encode(JSON.stringify({ message: 'somedata 2' })),
+		])
+	})
+})
 
-describe( 'Stream.write()', () => {
+describe('Stream.write()', () => {
 	let stream: Stream
 
-	beforeEach( () => {
+	beforeEach(() => {
 		stream = new Stream()
-	} )
+	})
 
-	it( 'writes data into the stream', () => {
-		stream.write( 'some data' )
-			.then( () => stream.close() )
+	it('writes data into the stream', async () => {
+		stream.write('some data').then(() => stream.close())
 
-		expect( new StreamReader( stream.readable ).read() )
-			.resolves.toEqual( [ 'some data' ] )
-			
-	} )
-} )
+		await expect(new StreamReader(stream.readable).read()).resolves.toEqual(['some data'])
+	})
+})
 
-
-describe( 'Stream.close()', () => {
+describe('Stream.close()', () => {
 	let stream: Stream
 
-	beforeEach( () => {
+	beforeEach(() => {
 		stream = new Stream()
-	} )
+	})
 
-
-	it( 'closes the stream and release thw writer lock', async () => {
-		const closeSpy		= jest.spyOn( stream.writer, 'close' )
-		const releaseSpy	= jest.spyOn( stream.writer, 'releaseLock' )
+	it('closes the stream and release thw writer lock', async () => {
+		const closeSpy = vi.spyOn(stream.writer, 'close')
+		const releaseSpy = vi.spyOn(stream.writer, 'releaseLock')
 
 		await stream.close()
 
-		expect( stream.closed ).toBe( true )
-		expect( closeSpy ).toHaveBeenCalled()
-		expect( releaseSpy ).toHaveBeenCalled()
-	} )
+		expect(stream.closed).toBe(true)
+		expect(closeSpy).toHaveBeenCalled()
+		expect(releaseSpy).toHaveBeenCalled()
+	})
 
+	it('closes the stream once even if called multiple times', async () => {
+		const closeSpy = vi.spyOn(stream.writer, 'close')
+		const releaseSpy = vi.spyOn(stream.writer, 'releaseLock')
 
-	it( 'closes the stream once even if called multiple times', async () => {
-		const closeSpy		= jest.spyOn( stream.writer, 'close' )
-		const releaseSpy	= jest.spyOn( stream.writer, 'releaseLock' )
-
-		await ( async () => {
+		await (async (): Promise<void> => {
 			stream.close()
-			expect( stream[ 'isClosing' ] ).toBe( true )
+			expect(stream['isClosing']).toBe(true)
 			await stream.close()
 			await stream.close()
 			await stream.close()
 			await stream.close()
-		} )()
+		})()
 
-		expect( stream.closed ).toBe( true )
-		expect( stream[ 'isClosing' ] ).toBe( false )
-		expect( closeSpy ).toHaveBeenCalledTimes( 1 )
-		expect( releaseSpy ).toHaveBeenCalledTimes( 1 )
-	} )
+		expect(stream.closed).toBe(true)
+		expect(stream['isClosing']).toBe(false)
+		expect(closeSpy).toHaveBeenCalledTimes(1)
+		expect(releaseSpy).toHaveBeenCalledTimes(1)
+	})
+})
 
-} )
-
-
-describe( 'Stream.abort()', () => {
-
+describe('Stream.abort()', () => {
 	let stream: Stream
 
-	beforeEach( () => {
+	beforeEach(() => {
 		stream = new Stream()
-	} )
+	})
 
-
-	it( 'set `Stream.closed` to `true`', async () => {
-
+	it('set `Stream.closed` to `true`', async () => {
 		await stream.abort()
-		expect( stream.closed ).toBe( true )
+		expect(stream.closed).toBe(true)
+	})
 
-	} )
-
-
-	it( 'calls `Stream.writer.abort()` with a default reason', async () => {
-
-		const abortSpy	= jest.spyOn( stream.writer, 'abort' )
-		const abortObj	= {
-			name	: 'AbortError',
-			message	: 'Stream writer aborted.',
-			code	: ErrorCode.ABORT,
-		}
+	it('calls `Stream.writer.abort()` with a default reason', async () => {
+		const abortSpy = vi.spyOn(stream.writer, 'abort')
 
 		await stream.abort()
 
-		expect( abortSpy )
-			.toHaveBeenCalledWith(
-				expect.objectContaining( abortObj )
-			)
-		
-	} )
+		expect(abortSpy).toHaveBeenCalledWith(expect.any(AbortError))
+	})
 
-
-	it( 'calls `Stream.writer.abort()` with a custom reason', async () => {
-
-		const abortSpy	= jest.spyOn( stream.writer, 'abort' )
-		const reason	= 'Custom abort reason'
-		const abortObj	= {
-			name	: 'AbortError',
-			message	: reason,
-			code	: ErrorCode.ABORT,
-		}
-
-		await stream.abort( reason )
-
-		expect( abortSpy )
-			.toHaveBeenCalledWith(
-				expect.objectContaining( abortObj )
-			)
-		
-	} )
-
-
-	it( 'aborts the stream once even if called multiple times', async () => {
-
-		const abortSpy = jest.spyOn( stream.writer, 'abort' )
+	it('calls `Stream.writer.abort()` with a custom reason', async () => {
+		const abortSpy = vi.spyOn(stream.writer, 'abort')
+		const reason = 'Custom abort reason'
 		const abortObj = {
-			name	: 'AbortError',
-			message	: 'Stream writer aborted.',
-			code	: ErrorCode.ABORT,
+			name: 'AbortError',
+			message: reason,
+			code: ErrorCode.ABORT,
 		}
 
-		const streamData = async () => {
+		await stream.abort(reason)
+
+		expect(abortSpy).toHaveBeenCalledWith(expect.objectContaining(abortObj))
+	})
+
+	it('aborts the stream once even if called multiple times', async () => {
+		const abortSpy = vi.spyOn(stream.writer, 'abort')
+
+		const streamData = async (): Promise<void> => {
 			stream.abort()
-			expect( stream[ 'isClosing' ] ).toBe( true )
+			expect(stream['isClosing']).toBe(true)
 			await stream.abort()
 			await stream.abort()
 			await stream.abort()
 			await stream.abort()
 			// the next `stream.write` will throw the abort reason caught in the next `catch` block.
-			await stream.write( 'Trying to write after aborting.' )
+			await stream.write('Trying to write after aborting.')
 		}
 
-		await (
-			streamData()
-				.catch( error => {
-					expect( error ).toStrictEqual( expect.objectContaining( abortObj ) )
-				} )
-		)
+		const error = await streamData().catch(error => error)
+		expect(error).toStrictEqual(expect.any(AbortError))
 
-		expect( stream.closed ).toBe( true )
-		expect( stream[ 'isClosing' ] ).toBe( false )
-		expect( abortSpy ).toHaveBeenCalledTimes( 1 )
-		expect( abortSpy ).toHaveBeenCalledWith( expect.objectContaining( abortObj ) )
+		expect(stream.closed).toBe(true)
+		expect(stream['isClosing']).toBe(false)
+		expect(abortSpy).toHaveBeenCalledExactlyOnceWith(expect.any(AbortError))
+	})
 
-	} )
-
-
-	it( 'accepts custom AbortError options', async () => {
-
-		const abortSpy	= jest.spyOn( stream.writer, 'abort' )
-		const reason	= 'Custom abort reason'
-		const abortObj	= {
-			name	: 'AbortError',
-			message	: reason,
-			code	: ErrorCode.EXPIRED,
+	it('accepts custom AbortError options', async () => {
+		const abortSpy = vi.spyOn(stream.writer, 'abort')
+		const reason = 'Custom abort reason'
+		const abortObj = {
+			name: 'AbortError',
+			message: reason,
+			code: ErrorCode.EXPIRED,
 		}
 
-		await stream.abort( reason, { code: ErrorCode.EXPIRED } )
+		await stream.abort(reason, { code: ErrorCode.EXPIRED })
 
-		expect( abortSpy )
-			.toHaveBeenCalledWith(
-				expect.objectContaining( abortObj )
-			)
-		
-	} )
-
-} )
+		expect(abortSpy).toHaveBeenCalledWith(expect.objectContaining(abortObj))
+	})
+})

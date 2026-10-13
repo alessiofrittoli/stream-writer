@@ -13,7 +13,6 @@
 [downloads-badge]: https://img.shields.io/npm/dm/%40alessiofrittoli%2Fstream-writer.svg
 [deps-badge]: https://img.shields.io/librariesio/release/npm/%40alessiofrittoli%2Fstream-writer
 [deps-url]: https://libraries.io/npm/%40alessiofrittoli%2Fstream-writer
-
 [sponsor-badge]: https://img.shields.io/static/v1?label=Fund%20this%20package&message=%E2%9D%A4&logo=GitHub&color=%23DB61A2
 [sponsor-url]: https://github.com/sponsors/alessiofrittoli
 
@@ -40,7 +39,7 @@ If you're interested in a simple and effective way to read streams, take a look 
   - [Writing data into a stream with a custom transformer](#writing-data-into-a-stream-with-a-custom-transformer)
   - [Aborting the stream](#aborting-the-stream)
 - [Development](#development)
-  - [Install depenendencies](#install-depenendencies)
+  - [Install dependencies](#install-dependencies)
   - [Build the source code](#build-the-source-code)
   - [ESLint](#eslint)
   - [Jest](#jest)
@@ -124,7 +123,7 @@ These features make the `Stream` class a versatile and developer-friendly abstra
 ### Importing the library
 
 ```ts
-import { Stream } from '@alessiofrittoli/stream-writer'
+import { Stream } from "@alessiofrittoli/stream-writer";
 ```
 
 ---
@@ -132,7 +131,7 @@ import { Stream } from '@alessiofrittoli/stream-writer'
 ### Properties
 
 | Property   | Type                             | Description                                    |
-|------------|----------------------------------|------------------------------------------------|
+| ---------- | -------------------------------- | ---------------------------------------------- |
 | `writable` | `WritableStream<I>`              | The writable stream instance.                  |
 | `readable` | `ReadableStream<O>`              | The readable stream instance.                  |
 | `writer`   | `WritableStreamDefaultWriter<I>` | The writer instance for the writable stream.   |
@@ -146,7 +145,7 @@ import { Stream } from '@alessiofrittoli/stream-writer'
 Constructs a new instance of the `Stream` class.
 
 | Parameter          | Type                 | Description                                           |
-|--------------------|----------------------|-------------------------------------------------------|
+| ------------------ | -------------------- | ----------------------------------------------------- |
 | `transformer`      | `Transformer<I, O>`  | (Optional) A custom transformer for the stream.       |
 | `writableStrategy` | `QueuingStrategy<I>` | (Optional) A custom strategy for the writable stream. |
 | `readableStrategy` | `QueuingStrategy<O>` | (Optional) A custom strategy for the readable stream. |
@@ -162,7 +161,7 @@ Writes data into the stream.
 ##### Parameters
 
 | Parameter | Type | Description                            |
-|-----------|------|----------------------------------------|
+| --------- | ---- | -------------------------------------- |
 | `chunk`   | `I`  | The data chunk to write to the stream. |
 
 ##### Returns
@@ -196,7 +195,7 @@ Aborts the stream with an optional reason.
 ##### Parameters
 
 | Parameter | Type     | Description                                    |
-|-----------|----------|------------------------------------------------|
+| --------- | -------- | ---------------------------------------------- |
 | `reason`  | `string` | (Optional) The reason for aborting the stream. |
 
 ##### Returns
@@ -213,20 +212,19 @@ Type: `Promise<Stream>`
 
 ```ts
 const routeHandler = () => {
-  const stream = new Stream()
-  
+  const stream = new Stream();
+
   const streamTask = async () => {
-    await stream.write( 'data' )
-    await stream.write( 'data 2' )
-    await stream.write( 'data 3' )
-    await stream.write( 'data 4' )
-  }
-  
-  streamTask()
-    .then( () => stream.close() )
-  
-  return new Response( stream.readable, { headers: stream.headers } )
-}
+    await stream.write("data");
+    await stream.write("data 2");
+    await stream.write("data 3");
+    await stream.write("data 4");
+  };
+
+  streamTask().then(() => stream.close());
+
+  return new Response(stream.readable, { headers: stream.headers });
+};
 ```
 
 ---
@@ -235,28 +233,24 @@ const routeHandler = () => {
 
 ```ts
 const routeHandler = () => {
-  const encoder = new TextEncoder()
-  const stream = (
-    new Stream<string, Uint8Array>( {
-      transform( chunk, controller )
-      {
-        controller.enqueue( encoder.encode( chunk ) )
-      }
-    } )
-  )
+  const encoder = new TextEncoder();
+  const stream = new Stream<string, Uint8Array>({
+    transform(chunk, controller) {
+      controller.enqueue(encoder.encode(chunk));
+    },
+  });
 
   const streamTask = async () => {
-    await stream.write( 'data' )
-    await stream.write( 'data 2' )
-    await stream.write( 'data 3' )
-    await stream.write( 'data 4' )
-  }
+    await stream.write("data");
+    await stream.write("data 2");
+    await stream.write("data 3");
+    await stream.write("data 4");
+  };
 
-  streamTask()
-    .then( () => stream.close() )
+  streamTask().then(() => stream.close());
 
-  return new Response( stream.readable, { headers: stream.headers } )
-}
+  return new Response(stream.readable, { headers: stream.headers });
+};
 ```
 
 ---
@@ -264,32 +258,31 @@ const routeHandler = () => {
 #### Aborting the stream
 
 ```ts
-const routeHandler = request => {
-  request.signal.addEventListener( 'abort', () => {
-    stream.abort( 'The user aborted the request.' )
-  } )
-  
-  const stream = new Stream()
-  
-  const streamTask = async () => {
-    await stream.write( 'data' )
-    await stream.write( 'data 2' )
-    await stream.write( 'data 3' )
-    await stream.write( 'data 4' )
-  }
-  
-  streamTask()
-    .catch( error => {
-      if ( error.name === 'AbortError' ) {
-        return console.log( 'AbortError:', error.message )
-      }
-      await stream.write( error.message )
-    } )
-    .finally( () => stream.close() )
-  
-  return new Response( stream.readable, { headers: stream.headers } )
+const routeHandler = (request) => {
+  request.signal.addEventListener("abort", () => {
+    stream.abort("The user aborted the request.");
+  });
 
-}
+  const stream = new Stream();
+
+  const streamTask = async () => {
+    await stream.write("data");
+    await stream.write("data 2");
+    await stream.write("data 3");
+    await stream.write("data 4");
+  };
+
+  streamTask()
+    .catch((error) => {
+      if (error.name === "AbortError") {
+        return console.log("AbortError:", error.message);
+      }
+      await stream.write(error.message);
+    })
+    .finally(() => stream.close());
+
+  return new Response(stream.readable, { headers: stream.headers });
+};
 ```
 
 ---
@@ -300,7 +293,7 @@ If you're interested in a simple and effective way to read streams, take a look 
 
 ### Development
 
-#### Install depenendencies
+#### Install dependencies
 
 ```bash
 npm install
@@ -322,7 +315,7 @@ pnpm build
 
 #### [ESLint](https://www.npmjs.com/package/eslint)
 
-warnings / errors check.
+Run warnings and errors checks.
 
 ```bash
 pnpm lint
