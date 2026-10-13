@@ -38,7 +38,7 @@ export class Stream<I = unknown, O = I> extends TransformStream<I, O> {
 	 */
 	protected _closed: boolean
 
-	private set closed(value: typeof this._closed) {
+	protected set closed(value: typeof this._closed) {
 		this._closed = value
 	}
 
