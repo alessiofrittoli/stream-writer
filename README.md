@@ -12,8 +12,8 @@ If you're interested in a simple and effective way to read streams, take a look 
   <a href="https://npmjs.org/package/@alessiofrittoli/stream-writer">
     <img src="https://img.shields.io/npm/v/@alessiofrittoli/stream-writer" alt="Latest version"/>
   </a>
-  <a href="https://coveralls.io/github/alessiofrittoli/exception">
-    <img src="https://coveralls.io/repos/github/alessiofrittoli/exception/badge.svg" alt="Test coverage"/>
+  <a href="https://coveralls.io/github/alessiofrittoli/stream-writer">
+    <img src="https://coveralls.io/repos/github/alessiofrittoli/stream-writer/badge.svg" alt="Test coverage"/>
   </a>
   <a href="https://socket.dev/npm/package/@alessiofrittoli/stream-writer/overview">
     <img src="https://socket.dev/api/badge/npm/package/@alessiofrittoli/stream-writer" alt="Socket Security score"/>
@@ -24,7 +24,7 @@ If you're interested in a simple and effective way to read streams, take a look 
   <a href="https://bundlephobia.com/package/@alessiofrittoli/stream-writer">
     <img src="https://badgen.net/bundlephobia/dependency-count/@alessiofrittoli/stream-writer" alt="Dependencies"/>
   </a>
-  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fexception">
+  <a href="https://libraries.io/npm/%40alessiofrittoli%2Fstream-writer">
     <img src="https://img.shields.io/librariesio/release/npm/@alessiofrittoli/stream-writer" alt="Dependencies status"/>
   </a>
 </p>
