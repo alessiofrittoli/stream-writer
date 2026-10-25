@@ -1,3 +1,4 @@
+// oxlint-disable typescript/no-floating-promises
 import { AbortError } from '@alessiofrittoli/exception/abort'
 import { StreamReader } from '@alessiofrittoli/stream-reader'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
